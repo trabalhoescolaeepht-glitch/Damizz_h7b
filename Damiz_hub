@@ -1,0 +1,564 @@
+--[[
+    BLOOD MOON UI - By DAMIZZ HUB
+    Versão: 2.0 (Neon Futurista)
+    Como usar: Copie e cole este script inteiro no console ou executor
+]]
+
+-- ============================================
+-- INÍCIO DO SCRIPT
+-- ============================================
+
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+
+-- Criar ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "BloodMoonGUI"
+screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
+
+-- ============================================
+-- LOGO (Lua Vermelha)
+-- ============================================
+local logoButton = Instance.new("TextButton")
+logoButton.Name = "LogoButton"
+logoButton.Size = UDim2.new(0, 70, 0, 70)
+logoButton.Position = UDim2.new(0, 10, 0, 10)
+logoButton.BackgroundColor3 = Color3.new(0.2, 0, 0)
+logoButton.BackgroundTransparency = 0.2
+logoButton.BorderSizePixel = 2
+logoButton.BorderColor3 = Color3.new(1, 0, 0)
+logoButton.Text = "🌕"
+logoButton.TextColor3 = Color3.new(1, 0, 0)
+logoButton.TextSize = 40
+logoButton.Font = Enum.Font.GothamBold
+logoButton.Parent = screenGui
+logoButton.ClipsDescendants = true
+
+-- Deixar o logo redondo
+local logoCorner = Instance.new("UICorner")
+logoCorner.CornerRadius = UDim.new(1, 0)
+logoCorner.Parent = logoButton
+
+-- Animação do logo
+local logoPulse = TweenService:Create(
+    logoButton,
+    TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+    {
+        BackgroundTransparency = 0.1,
+        Size = UDim2.new(0, 75, 0, 75)
+    }
+)
+logoPulse:Play()
+
+local logoGlow = TweenService:Create(
+    logoButton,
+    TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+    {
+        BorderColor3 = Color3.new(1, 0.3, 0)
+    }
+)
+logoGlow:Play()
+
+-- ============================================
+-- PAINEL PRINCIPAL
+-- ============================================
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 500, 0, 450)
+mainFrame.Position = UDim2.new(0.5, -250, 0.5, -225)
+mainFrame.BackgroundColor3 = Color3.new(0.01, 0.05, 0.1)
+mainFrame.BackgroundTransparency = 0.05
+mainFrame.BorderSizePixel = 0
+mainFrame.Visible = false
+mainFrame.Parent = screenGui
+mainFrame.ClipsDescendants = true
+
+-- Cantos arredondados
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 20)
+corner.Parent = mainFrame
+
+-- Borda Neon
+local neonBorder = Instance.new("Frame")
+neonBorder.Size = UDim2.new(1, 0, 1, 0)
+neonBorder.BackgroundTransparency = 1
+neonBorder.BorderSizePixel = 3
+neonBorder.BorderColor3 = Color3.new(0, 0.6, 1)
+neonBorder.Parent = mainFrame
+
+local borderCorner = Instance.new("UICorner")
+borderCorner.CornerRadius = UDim.new(0, 20)
+borderCorner.Parent = neonBorder
+
+-- Borda Neon externa (glow)
+local glowBorder = Instance.new("Frame")
+glowBorder.Size = UDim2.new(1.02, 0, 1.02, 0)
+glowBorder.Position = UDim2.new(-0.01, 0, -0.01, 0)
+glowBorder.BackgroundTransparency = 1
+glowBorder.BorderSizePixel = 4
+glowBorder.BorderColor3 = Color3.new(0, 0.4, 0.8)
+glowBorder.BackgroundTransparency = 0.5
+glowBorder.Parent = mainFrame
+
+local glowCorner = Instance.new("UICorner")
+glowCorner.CornerRadius = UDim.new(0, 22)
+glowCorner.Parent = glowBorder
+
+-- Animações das bordas
+local borderAnim = TweenService:Create(
+    neonBorder,
+    TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+    {
+        BorderColor3 = Color3.new(0, 0.8, 1)
+    }
+)
+borderAnim:Play()
+
+local glowAnim = TweenService:Create(
+    glowBorder,
+    TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+    {
+        BorderColor3 = Color3.new(0, 0.3, 0.8)
+    }
+)
+glowAnim:Play()
+
+-- Fundo com gradiente
+local gradient = Instance.new("Frame")
+gradient.Size = UDim2.new(1, 0, 1, 0)
+gradient.BackgroundColor3 = Color3.new(0.01, 0.05, 0.15)
+gradient.BackgroundTransparency = 0.3
+gradient.Parent = mainFrame
+
+local gradientCorner = Instance.new("UICorner")
+gradientCorner.CornerRadius = UDim.new(0, 20)
+gradientCorner.Parent = gradient
+
+-- Linhas de grid (efeito tecnológico)
+for i = 0, 10 do
+    local line = Instance.new("Frame")
+    line.Size = UDim2.new(0.9, 0, 0, 1)
+    line.Position = UDim2.new(0.05, 0, 0, (i * 45) + 20)
+    line.BackgroundColor3 = Color3.new(0, 0.4, 0.8)
+    line.BackgroundTransparency = 0.7
+    line.BorderSizePixel = 0
+    line.Parent = mainFrame
+end
+
+for i = 0, 8 do
+    local line = Instance.new("Frame")
+    line.Size = UDim2.new(0, 1, 0.9, 0)
+    line.Position = UDim2.new(0, (i * 60) + 20, 0.05, 0)
+    line.BackgroundColor3 = Color3.new(0, 0.4, 0.8)
+    line.BackgroundTransparency = 0.7
+    line.BorderSizePixel = 0
+    line.Parent = mainFrame
+end
+
+-- Título
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 55)
+title.Position = UDim2.new(0, 0, 0, 5)
+title.BackgroundTransparency = 1
+title.Text = "BLOOD MOON"
+title.TextColor3 = Color3.new(0, 0.8, 1)
+title.TextSize = 32
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.Parent = mainFrame
+
+local titleAnim = TweenService:Create(
+    title,
+    TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+    {
+        TextColor3 = Color3.new(0.3, 0.9, 1)
+    }
+)
+titleAnim:Play()
+
+-- Subtítulo
+local subtitle = Instance.new("TextLabel")
+subtitle.Size = UDim2.new(1, 0, 0, 25)
+subtitle.Position = UDim2.new(0, 0, 0, 50)
+subtitle.BackgroundTransparency = 1
+subtitle.Text = "⚡ Created by: DAMIZZ HUB ⚡"
+subtitle.TextColor3 = Color3.new(0.3, 0.6, 0.9)
+subtitle.TextSize = 14
+subtitle.Font = Enum.Font.Gotham
+subtitle.Parent = mainFrame
+
+-- Botão fechar
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 35, 0, 35)
+closeBtn.Position = UDim2.new(1, -45, 0, 5)
+closeBtn.BackgroundColor3 = Color3.new(0.1, 0.1, 0.2)
+closeBtn.BorderSizePixel = 2
+closeBtn.BorderColor3 = Color3.new(0, 0.6, 1)
+closeBtn.Text = "✕"
+closeBtn.TextColor3 = Color3.new(0, 0.8, 1)
+closeBtn.TextSize = 20
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.Parent = mainFrame
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 10)
+closeCorner.Parent = closeBtn
+
+closeBtn.MouseButton1Click:Connect(function()
+    mainFrame.Visible = false
+end)
+
+-- Divisória
+local divider = Instance.new("Frame")
+divider.Size = UDim2.new(0.9, 0, 0, 2)
+divider.Position = UDim2.new(0.05, 0, 0, 85)
+divider.BackgroundColor3 = Color3.new(0, 0.6, 1)
+divider.BorderSizePixel = 0
+divider.Parent = mainFrame
+
+-- ============================================
+-- ABAS
+-- ============================================
+local tabContainer = Instance.new("Frame")
+tabContainer.Size = UDim2.new(1, 0, 0, 45)
+tabContainer.Position = UDim2.new(0, 0, 0, 90)
+tabContainer.BackgroundTransparency = 1
+tabContainer.Parent = mainFrame
+
+-- Aba 1 - GERADO ID
+local tab1 = Instance.new("TextButton")
+tab1.Size = UDim2.new(0.5, -2, 1, 0)
+tab1.Position = UDim2.new(0, 0, 0, 0)
+tab1.BackgroundColor3 = Color3.new(0.05, 0.1, 0.2)
+tab1.BorderSizePixel = 2
+tab1.BorderColor3 = Color3.new(0, 0.6, 1)
+tab1.Text = "📡 GERADO ID"
+tab1.TextColor3 = Color3.new(0, 0.8, 1)
+tab1.TextSize = 16
+tab1.Font = Enum.Font.GothamBold
+tab1.Parent = tabContainer
+
+local tab1Corner = Instance.new("UICorner")
+tab1Corner.CornerRadius = UDim.new(0, 8)
+tab1Corner.Parent = tab1
+
+-- Aba 2 - CARREGA ID
+local tab2 = Instance.new("TextButton")
+tab2.Size = UDim2.new(0.5, -2, 1, 0)
+tab2.Position = UDim2.new(0.5, 2, 0, 0)
+tab2.BackgroundColor3 = Color3.new(0.02, 0.05, 0.1)
+tab2.BorderSizePixel = 2
+tab2.BorderColor3 = Color3.new(0.1, 0.3, 0.5)
+tab2.Text = "🚀 CARREGA ID"
+tab2.TextColor3 = Color3.new(0.3, 0.5, 0.7)
+tab2.TextSize = 16
+tab2.Font = Enum.Font.GothamBold
+tab2.Parent = tabContainer
+
+local tab2Corner = Instance.new("UICorner")
+tab2Corner.CornerRadius = UDim.new(0, 8)
+tab2Corner.Parent = tab2
+
+-- ============================================
+-- CONTEÚDO DA ABA 1 (GERADO ID)
+-- ============================================
+local content1 = Instance.new("Frame")
+content1.Size = UDim2.new(1, 0, 1, -145)
+content1.Position = UDim2.new(0, 0, 0, 140)
+content1.BackgroundTransparency = 1
+content1.Parent = mainFrame
+
+local idLabel = Instance.new("TextLabel")
+idLabel.Size = UDim2.new(0.9, 0, 0, 30)
+idLabel.Position = UDim2.new(0.05, 0, 0, 5)
+idLabel.BackgroundTransparency = 1
+idLabel.Text = "📋 ID DO SERVIDOR:"
+idLabel.TextColor3 = Color3.new(0, 0.8, 1)
+idLabel.TextSize = 16
+idLabel.Font = Enum.Font.GothamBold
+idLabel.TextXAlignment = Enum.TextXAlignment.Left
+idLabel.Parent = content1
+
+-- Display do ID
+local idDisplay = Instance.new("Frame")
+idDisplay.Size = UDim2.new(0.85, 0, 0, 50)
+idDisplay.Position = UDim2.new(0.075, 0, 0, 40)
+idDisplay.BackgroundColor3 = Color3.new(0.02, 0.05, 0.12)
+idDisplay.BorderSizePixel = 2
+idDisplay.BorderColor3 = Color3.new(0, 0.6, 1)
+idDisplay.Parent = content1
+
+local idDisplayCorner = Instance.new("UICorner")
+idDisplayCorner.CornerRadius = UDim.new(0, 12)
+idDisplayCorner.Parent = idDisplay
+
+local idDisplayText = Instance.new("TextLabel")
+idDisplayText.Size = UDim2.new(1, 0, 1, 0)
+idDisplayText.BackgroundTransparency = 1
+idDisplayText.Text = "⚡ Clique em GERAR ID"
+idDisplayText.TextColor3 = Color3.new(0.3, 0.6, 0.9)
+idDisplayText.TextSize = 14
+idDisplayText.Font = Enum.Font.Gotham
+idDisplayText.Parent = idDisplay
+
+-- Botão GERAR ID
+local generateBtn = Instance.new("TextButton")
+generateBtn.Size = UDim2.new(0.4, 0, 0, 45)
+generateBtn.Position = UDim2.new(0.3, 0, 0, 105)
+generateBtn.BackgroundColor3 = Color3.new(0.05, 0.15, 0.3)
+generateBtn.BorderSizePixel = 2
+generateBtn.BorderColor3 = Color3.new(0, 0.6, 1)
+generateBtn.Text = "⚡ GERAR ID"
+generateBtn.TextColor3 = Color3.new(0, 0.8, 1)
+generateBtn.TextSize = 16
+generateBtn.Font = Enum.Font.GothamBold
+generateBtn.Parent = content1
+
+local generateCorner = Instance.new("UICorner")
+generateCorner.CornerRadius = UDim.new(0, 10)
+generateCorner.Parent = generateBtn
+
+-- Aviso em vermelho neon
+local warningLabel = Instance.new("TextLabel")
+warningLabel.Size = UDim2.new(0.9, 0, 0, 25)
+warningLabel.Position = UDim2.new(0.05, 0, 0, 165)
+warningLabel.BackgroundTransparency = 1
+warningLabel.Text = "⚠️ Aperte em GERAR ID pra copiar o ID ⚠️"
+warningLabel.TextColor3 = Color3.new(1, 0.2, 0)
+warningLabel.TextSize = 13
+warningLabel.Font = Enum.Font.GothamBold
+warningLabel.Parent = content1
+
+local warningAnim = TweenService:Create(
+    warningLabel,
+    TweenInfo.new(0.8, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
+    {
+        TextColor3 = Color3.new(1, 0.5, 0)
+    }
+)
+warningAnim:Play()
+
+-- ============================================
+-- CONTEÚDO DA ABA 2 (CARREGA ID)
+-- ============================================
+local content2 = Instance.new("Frame")
+content2.Size = UDim2.new(1, 0, 1, -145)
+content2.Position = UDim2.new(0, 0, 0, 140)
+content2.BackgroundTransparency = 1
+content2.Visible = false
+content2.Parent = mainFrame
+
+local insertLabel = Instance.new("TextLabel")
+insertLabel.Size = UDim2.new(0.9, 0, 0, 30)
+insertLabel.Position = UDim2.new(0.05, 0, 0, 5)
+insertLabel.BackgroundTransparency = 1
+insertLabel.Text = "🎯 COLE O ID DO SERVIDOR:"
+insertLabel.TextColor3 = Color3.new(0, 0.8, 1)
+insertLabel.TextSize = 16
+insertLabel.Font = Enum.Font.GothamBold
+insertLabel.TextXAlignment = Enum.TextXAlignment.Left
+insertLabel.Parent = content2
+
+-- Input do ID
+local idInputFrame = Instance.new("Frame")
+idInputFrame.Size = UDim2.new(0.85, 0, 0, 45)
+idInputFrame.Position = UDim2.new(0.075, 0, 0, 40)
+idInputFrame.BackgroundColor3 = Color3.new(0.02, 0.05, 0.12)
+idInputFrame.BorderSizePixel = 2
+idInputFrame.BorderColor3 = Color3.new(0, 0.6, 1)
+idInputFrame.Parent = content2
+
+local idInputCorner = Instance.new("UICorner")
+idInputCorner.CornerRadius = UDim.new(0, 12)
+idInputCorner.Parent = idInputFrame
+
+local idInput = Instance.new("TextBox")
+idInput.Size = UDim2.new(1, -10, 1, 0)
+idInput.Position = UDim2.new(0, 5, 0, 0)
+idInput.BackgroundTransparency = 1
+idInput.Text = ""
+idInput.PlaceholderText = "Cole o ID do servidor aqui..."
+idInput.TextColor3 = Color3.new(0, 0.8, 1)
+idInput.PlaceholderColor3 = Color3.new(0.2, 0.4, 0.6)
+idInput.TextSize = 14
+idInput.Font = Enum.Font.Gotham
+idInput.Parent = idInputFrame
+
+-- Botão CARREGA ID
+local loadBtn = Instance.new("TextButton")
+loadBtn.Size = UDim2.new(0.4, 0, 0, 45)
+loadBtn.Position = UDim2.new(0.3, 0, 0, 100)
+loadBtn.BackgroundColor3 = Color3.new(0.05, 0.15, 0.3)
+loadBtn.BorderSizePixel = 2
+loadBtn.BorderColor3 = Color3.new(0, 0.6, 1)
+loadBtn.Text = "🔄 CARREGA ID"
+loadBtn.TextColor3 = Color3.new(0, 0.8, 1)
+loadBtn.TextSize = 16
+loadBtn.Font = Enum.Font.GothamBold
+loadBtn.Parent = content2
+
+local loadCorner = Instance.new("UICorner")
+loadCorner.CornerRadius = UDim.new(0, 10)
+loadCorner.Parent = loadBtn
+
+-- Status
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Size = UDim2.new(0.9, 0, 0, 30)
+statusLabel.Position = UDim2.new(0.05, 0, 0, 160)
+statusLabel.BackgroundTransparency = 1
+statusLabel.Text = ""
+statusLabel.TextColor3 = Color3.new(0, 0.8, 1)
+statusLabel.TextSize = 13
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.Parent = content2
+
+-- ============================================
+-- FUNÇÕES
+-- ============================================
+
+-- Trocar abas
+local function switchTab(tabNum)
+    if tabNum == 1 then
+        tab1.BackgroundColor3 = Color3.new(0.05, 0.1, 0.2)
+        tab1.BorderColor3 = Color3.new(0, 0.6, 1)
+        tab1.TextColor3 = Color3.new(0, 0.8, 1)
+        tab2.BackgroundColor3 = Color3.new(0.02, 0.05, 0.1)
+        tab2.BorderColor3 = Color3.new(0.1, 0.3, 0.5)
+        tab2.TextColor3 = Color3.new(0.3, 0.5, 0.7)
+        content1.Visible = true
+        content2.Visible = false
+    else
+        tab2.BackgroundColor3 = Color3.new(0.05, 0.1, 0.2)
+        tab2.BorderColor3 = Color3.new(0, 0.6, 1)
+        tab2.TextColor3 = Color3.new(0, 0.8, 1)
+        tab1.BackgroundColor3 = Color3.new(0.02, 0.05, 0.1)
+        tab1.BorderColor3 = Color3.new(0.1, 0.3, 0.5)
+        tab1.TextColor3 = Color3.new(0.3, 0.5, 0.7)
+        content1.Visible = false
+        content2.Visible = true
+    end
+end
+
+tab1.MouseButton1Click:Connect(function()
+    switchTab(1)
+end)
+
+tab2.MouseButton1Click:Connect(function()
+    switchTab(2)
+end)
+
+-- Obter ID do servidor atual
+local function getCurrentServerId()
+    return game.JobId
+end
+
+-- Gerar ID
+local function generateServerId()
+    local currentId = getCurrentServerId()
+    if currentId and currentId ~= "" then
+        return currentId
+    else
+        return "⚠️ ERRO: Não foi possível obter o ID"
+    end
+end
+
+-- Botão GERAR ID
+generateBtn.MouseButton1Click:Connect(function()
+    local newID = generateServerId()
+    idDisplayText.Text = newID
+    idDisplayText.TextColor3 = Color3.new(0, 0.8, 1)
+    
+    pcall(function()
+        setclipboard(newID)
+    end)
+    
+    statusLabel.Text = "✅ ID copiado para a área de transferência!"
+    statusLabel.TextColor3 = Color3.new(0, 0.8, 1)
+    task.wait(2)
+    statusLabel.Text = ""
+end)
+
+-- Teleportar para servidor
+local function teleportToServer(targetId)
+    if targetId and targetId ~= "" and targetId ~= "⚠️ ERRO: Não foi possível obter o ID" then
+        if game.JobId == targetId then
+            statusLabel.Text = "⚠️ Você já está neste servidor!"
+            statusLabel.TextColor3 = Color3.new(1, 0.8, 0)
+            task.wait(2)
+            statusLabel.Text = ""
+            return
+        end
+        
+        local success, err = pcall(function()
+            TeleportService:TeleportToInstance(targetId, player)
+        end)
+        
+        if success then
+            statusLabel.Text = "🔄 Teleportando para o servidor..."
+            statusLabel.TextColor3 = Color3.new(0, 0.8, 1)
+        else
+            statusLabel.Text = "❌ Erro ao teleportar: " .. tostring(err)
+            statusLabel.TextColor3 = Color3.new(1, 0.2, 0.2)
+            task.wait(2)
+            statusLabel.Text = ""
+        end
+    else
+        statusLabel.Text = "❌ ID inválido! Cole um ID válido."
+        statusLabel.TextColor3 = Color3.new(1, 0.2, 0.2)
+        task.wait(2)
+        statusLabel.Text = ""
+    end
+end
+
+-- Botão CARREGA ID
+loadBtn.MouseButton1Click:Connect(function()
+    local id = idInput.Text
+    if id and id ~= "" then
+        teleportToServer(id)
+        idInput.Text = ""
+    else
+        statusLabel.Text = "❌ Por favor, cole um ID de servidor válido!"
+        statusLabel.TextColor3 = Color3.new(1, 0.2, 0.2)
+        task.wait(2)
+        statusLabel.Text = ""
+    end
+end)
+
+-- ============================================
+-- ABRIR/FECHAR PAINEL
+-- ============================================
+local isOpen = false
+logoButton.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    mainFrame.Visible = isOpen
+    
+    if isOpen then
+        mainFrame.Size = UDim2.new(0, 0, 0, 0)
+        mainFrame.BackgroundTransparency = 1
+        
+        local openAnim = TweenService:Create(
+            mainFrame,
+            TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+            {
+                Size = UDim2.new(0, 500, 0, 450),
+                BackgroundTransparency = 0.05
+            }
+        )
+        openAnim:Play()
+        
+        local currentId = getCurrentServerId()
+        if currentId and currentId ~= "" then
+            idDisplayText.Text = currentId
+            idDisplayText.TextColor3 = Color3.new(0.3, 0.6, 0.9)
+        end
+    end
+end)
+
+-- ============================================
+-- FINAL
+-- ============================================
+print("✅ BLOOD MOON UI (Neon Futurista) Carregado - By DAMIZZ HUB")
+print("🔴 Clique na 🌕 vermelha no canto superior esquerdo para abrir")
